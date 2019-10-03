@@ -122,7 +122,19 @@ services:
     ports:
       - 8889:80
 
+  minio:
+    image: minio/minio
+    command: server /data
+    ports:
+      - "9000:9000"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: coopcycle
+
 volumes:
   node_modules:
   pg_data:
   php_cache:
+  minio_data:
