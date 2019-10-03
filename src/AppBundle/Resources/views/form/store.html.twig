@@ -1,6 +1,10 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
 {% block _store_imageFile_row %}
+
+  {# {{ dump(form.parent.vars.value) }} #}
+  {{ vich_uploader_asset(form.parent.vars.value, 'imageFile') }}
+
   <div class="form-group {% if not form.vars.valid %}has-error{% endif %}">
     <div class="image-uploader"
       {% if image_uri is defined and image_uri %}style="background-image: url({{ image_uri }})"{% endif %}>

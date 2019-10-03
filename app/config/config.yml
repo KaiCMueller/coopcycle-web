@@ -241,8 +241,7 @@ vich_uploader:
                     chars_per_dir: 2
                     dirs: 2
         store_image:
-            uri_prefix: /images/stores
-            # upload_destination: '%kernel.root_dir%/../web/images/stores'
+            uri_prefix: ''
             upload_destination: store_images_filesystem
             namer: vich_uploader.namer_uniqid
             directory_namer:
