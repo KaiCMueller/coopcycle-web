@@ -694,3 +694,16 @@ services:
     $secret: '%secret%'
 
   AppBundle\Security\TokenStoreExtractor: ~
+
+  # https://digitalist.se/blogg/using-open-source-minio-and-flysystem-s3-module-handle-drupal-files
+  # https://github.com/minio/cookbook/blob/master/docs/how-to-use-minio-as-laravel-file-storage.md
+  s3_client:
+    class: Aws\S3\S3Client
+    arguments:
+        - endpoint: http://minio:9000
+          version: latest
+          region: fr-fr
+          credentials:
+            key: minio
+            secret: coopcycle
+          use_path_style_endpoint: true
