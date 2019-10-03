@@ -132,6 +132,21 @@ services:
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: coopcycle
+      MINIO_REGION: fr-fr
+
+  minio_client:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add coopcycle http://minio:9000 minio coopcycle;
+      /usr/bin/mc mb --region fr-fr --ignore-existing coopcycle/restaurant-images;
+      /usr/bin/mc mb --region fr-fr --ignore-existing coopcycle/store-images;
+      /usr/bin/mc policy download coopcycle/restaurant-images;
+      /usr/bin/mc policy download coopcycle/store-images;
+      exit 0;
+      "
 
 volumes:
   node_modules:
