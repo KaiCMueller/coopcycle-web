@@ -206,8 +206,30 @@ snc_redis:
                 # https://github.com/nrk/predis/issues/33
                 read_write_timeout: 0
 
+oneup_flysystem:
+    adapters:
+        s3_restaurant_images:
+            awss3v3:
+                client: s3_client
+                bucket: restaurant-images
+                prefix: ~
+        s3_store_images:
+            awss3v3:
+                client: s3_client
+                bucket: store-images
+                prefix: ~
+    filesystems:
+        restaurant_images:
+            adapter: s3_restaurant_images
+            alias: restaurant_images_filesystem
+        store_images:
+            adapter: s3_store_images
+            alias: store_images_filesystem
+            mount: store_images_filesystem
+
 vich_uploader:
     db_driver: orm
+    storage: flysystem
     mappings:
         restaurant_image:
             uri_prefix: /images/restaurants
@@ -220,7 +242,8 @@ vich_uploader:
                     dirs: 2
         store_image:
             uri_prefix: /images/stores
-            upload_destination: '%kernel.root_dir%/../web/images/stores'
+            # upload_destination: '%kernel.root_dir%/../web/images/stores'
+            upload_destination: store_images_filesystem
             namer: vich_uploader.namer_uniqid
             directory_namer:
                 service: vich_uploader.directory_namer_subdir
@@ -462,7 +485,9 @@ oneup_uploader:
         restaurant:
             frontend: dropzone
             storage:
-                directory: '%kernel.root_dir%/../web/images/restaurants'
+                # directory: '%kernel.root_dir%/../web/images/restaurants'
+                type: flysystem
+                filesystem: restaurant_images_filesystem
             allowed_mimetypes:
                 image/jpg: []
                 image/jpeg: []
